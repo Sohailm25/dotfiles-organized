@@ -1,0 +1,33 @@
+# Secrets - NEVER commit
+.secrets
+**/secrets
+**/*.secret
+
+# OS files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Neovim
+nvim/.config/nvim/lazy-lock.json
+nvim/.config/nvim/.luarc.json
+nvim/.config/nvim/spell/
+
+# tmux
+tmux/.tmux/plugins/
+tmux/.tmux/resurrect/
+
+# Shell history
+zsh/.zsh_history
+zsh/.zsh_sessions/
+
+# Atuin
+atuin/.config/atuin/history.db
+atuin/.local/share/atuin/

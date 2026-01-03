@@ -1,0 +1,15 @@
+# Git files
+\.git
+\.gitignore
+\.gitmodules
+
+# Documentation
+README\.md
+LICENSE
+\.md$
+
+# Stow files
+\.stow-local-ignore
+
+# OS files
+\.DS_Store
