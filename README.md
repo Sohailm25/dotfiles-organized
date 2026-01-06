@@ -1,6 +1,8 @@
 # Sohail's Terminal Environment
 
 > Dotfiles managed with GNU Stow. Clone and `stow */` to set up.
+>
+> **New machine?** See [INSTALL.md](INSTALL.md) for complete setup instructions.
 
 ## Quick Reference Card
 
