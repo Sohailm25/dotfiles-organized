@@ -11,6 +11,7 @@
 ║  Cmd + 1-9      → Workspace   │  Ctrl + Space    → Prefix         ║
 ║  Cmd + Arrow    → Focus Win   │  Ctrl + Arrow    → Navigate Pane  ║
 ║  Cmd + K        → New Kitty   │  Ctrl + 1-9      → Switch Window  ║
+║  Cmd + L        → New Ghostty │                                   ║
 ║                               │  Prefix + T      → Session Picker ║
 ║                               │  Prefix + | / -  → Split Pane     ║
 ╚═══════════════════════════════════════════════════════════════════╝
@@ -22,9 +23,13 @@
 |-------|------|-----------------|-------|
 | OS Window Manager | Aerospace | `~/.aerospace.toml` | - |
 | Terminal Emulator | Kitty | `~/.config/kitty/kitty.conf` | Catppuccin Mocha |
+| Terminal Emulator | Ghostty | `~/.config/ghostty/config` | Catppuccin Mocha |
 | Terminal Multiplexer | tmux | `~/.tmux.conf` | Catppuccin Mocha |
 | Shell | Zsh + Oh My Zsh | `~/.zshrc` | Powerlevel10k |
 | Editor | Neovim (LazyVim) | `~/.config/nvim/` | Catppuccin |
+| Menu Bar | Barik | `~/.barik-config.toml` | - |
+
+> See [TOOLS.md](TOOLS.md) for complete tool inventory.
 
 ## Modifier Key Philosophy
 
@@ -51,6 +56,7 @@
 | `Cmd + ,` | Toggle accordion layout |
 | `Cmd + B` | Open browser |
 | `Cmd + K` | Open new Kitty terminal |
+| `Cmd + L` | Open new Ghostty terminal |
 | `Cmd + O` | Open Obsidian |
 | `Alt + Tab` | Workspace back-and-forth |
 
@@ -169,28 +175,26 @@ chmod 600 ~/.secrets
 ```
 ~/dotfiles/
 ├── README.md              ← This file
+├── TOOLS.md               ← Complete tool inventory
 ├── .gitignore
 ├── .stow-local-ignore
-├── aerospace/
-│   └── .aerospace.toml
-├── atuin/
-│   └── .config/atuin/config.toml
-├── git/
-│   └── .gitconfig
-├── kitty/
-│   └── .config/kitty/kitty.conf
-├── nvim/
-│   └── .config/nvim/
-│       ├── init.lua
-│       └── lua/
-│           └── plugins/
-│               └── smart-splits.lua
-├── p10k/
-│   └── .p10k.zsh
-├── tmux/
-│   └── .tmux.conf
-└── zsh/
-    └── .zshrc
+├── aerospace/             ← Window manager
+├── atuin/                 ← Shell history
+├── barik/                 ← Menu bar widgets
+├── borders/               ← Window borders
+├── btop/                  ← System monitor
+├── fastfetch/             ← System info
+├── fish/                  ← Alt shell
+├── gh/                    ← GitHub CLI
+├── ghostty/               ← Ghostty terminal
+├── git/                   ← Git config
+├── kitty/                 ← Kitty terminal
+├── markdownlint/          ← Markdown linting
+├── nvim/                  ← Neovim editor
+├── p10k/                  ← Prompt theme
+├── sketchybar/            ← Custom menu bar
+├── tmux/                  ← Terminal multiplexer
+└── zsh/                   ← Primary shell
 
 ~/.secrets  ← NOT in git (API keys)
 ```

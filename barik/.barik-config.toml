@@ -1,0 +1,50 @@
+# If you installed yabai or aerospace without using Homebrew,
+# manually set the path to the binary. For example:
+#
+# yabai.path = "/run/current-system/sw/bin/yabai"
+# aerospace.path = ...
+
+theme = "system" # system, light, dark
+
+[widgets]
+displayed = [ # widgets on menu bar
+  "default.spaces",
+  "spacer",
+  "default.battery",
+  "divider",
+  # { "default.time" = { time-zone = "America/Los_Angeles", format = "E d, hh:mm" } },
+  "default.time",
+]
+
+[widgets.default.spaces]
+space.show-key = true                         # show space number (or character, if you use AeroSpace)
+window.show-title = true
+window.title.max-length = 50
+window.title.always-display-app-name-for = []
+[widgets.default.battery]
+show-percentage = true
+warning-level = 30
+critical-level = 20
+
+[widgets.default.time]
+format = "E d, J:mm"
+calendar.format = "J:mm"
+
+[widgets.default.cpuram]
+show-icon = true        # Show CPU icon
+cpu-warning-level = 70  # CPU warning threshold (%)
+cpu-critical-level = 90 # CPU critical threshold (%)
+ram-warning-level = 70  # RAM warning threshold (%)
+ram-critical-level = 90 # RAM critical threshold (%)<D-s>
+
+calendar.show-events = true
+# calendar.allow-list = ["Home", "Personal"] # show only these calendars
+# calendar.deny-list = ["Work", "Boss"] # show all calendars except these
+
+[popup.default.time]
+view-variant = "box"
+
+[experimental.background]
+displayed = false
+blur = 1
+height = "default"

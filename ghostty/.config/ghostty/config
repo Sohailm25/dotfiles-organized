@@ -1,0 +1,27 @@
+# Font
+font-family = Liga SFMono Nerd Font
+font-family-bold = Liga SFMono Nerd Font Bold
+font-family-italic = Liga SFMono Nerd Font Regular Italic
+font-family-bold-italic = Liga SFMono Nerd Font Bold Italic
+font-size = 13
+
+# Theme (built-in Catppuccin Mocha)
+theme = Catppuccin Mocha
+
+# Appearance
+background-opacity = 0.6
+background-blur-radius = 20
+macos-titlebar-style = hidden
+window-padding-x = 4
+window-padding-y = 4
+
+# Cursor
+cursor-style-blink = false
+
+# Behavior
+quit-after-last-window-closed = true
+confirm-close-surface = false
+shell-integration = detect
+
+# Keybindings
+keybind = cmd+n=new_window

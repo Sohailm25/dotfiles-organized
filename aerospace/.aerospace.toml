@@ -99,8 +99,9 @@ outer.right = 15
 #     activate
 # end tell'
 # '''
-cmd-b = 'exec-and-forget open -a /Applications/Comet.app/'
+cmd-b = 'exec-and-forget open -a /Applications/Firefox.app/'
 cmd-k = 'exec-and-forget open -n /Applications/kitty.app/'
+cmd-l = 'exec-and-forget open -n /Applications/Ghostty.app/'
 cmd-shift-a = 'exec-and-forget open -a "Activity Monitor"'
 cmd-r = 'exec-and-forget open -a /Applications/Raindrop.io.app/'
 cmd-o = 'exec-and-forget open -a "Obsidian"'
