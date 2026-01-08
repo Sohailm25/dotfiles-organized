@@ -79,6 +79,14 @@ if [ -d "$DOTFILES_DIR/clawdis/.clawdis/skills" ]; then
     info "  Copied skills to ~/.clawdis/skills/"
 fi
 
+# Process Claude Code settings template
+info "Processing Claude Code settings..."
+if [ -f ~/.claude/settings.json.template ]; then
+    envsubst < ~/.claude/settings.json.template > ~/.claude/settings.json
+    chmod 600 ~/.claude/settings.json
+    info "  Generated: ~/.claude/settings.json"
+fi
+
 # Install slack-bridge dependencies
 info "Installing slack-bridge dependencies..."
 if [ -d ~/clawd/slack-bridge ] && [ -f ~/clawd/slack-bridge/package.json ]; then

@@ -1,0 +1,31 @@
+{
+  "linear": {
+    "teamId": "d5c8cdf1-1a11-4f96-ac38-0036175eafb5",
+    "doneStateId": "41170148-524f-46b8-b65e-eb8e6d5bb969"
+  },
+  "limitless": {
+    "timezone": "America/Chicago"
+  },
+  "jobs": {
+    "amazon": {
+      "name": "Amazon",
+      "mondayBoardId": "18393201528",
+      "linearProjectId": "6f73acb9-735e-4c48-9a6b-49f9187d3379"
+    },
+    "experian": {
+      "name": "Experian",
+      "mondayBoardId": "18393201511",
+      "linearProjectId": "852f7368-3ed1-4b88-b52c-98b99e505d8d"
+    },
+    "britannica": {
+      "name": "Britannica",
+      "mondayBoardId": "18393201533",
+      "linearProjectId": "46910ca1-871e-403e-922a-7b6ae99f50db"
+    },
+    "cvs": {
+      "name": "CVS",
+      "mondayBoardId": "18393201539",
+      "linearProjectId": "90363983-9f1b-4bed-a996-0f86255abdb0"
+    }
+  }
+}

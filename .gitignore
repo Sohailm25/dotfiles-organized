@@ -55,5 +55,9 @@ clawd/clawd/slack-bridge/dist/
 clawd/clawd/memory.md
 !clawd/clawd/memory.md.template
 
+# Claude Code - track templates, ignore generated settings
+.claude/.claude/settings.json
+!.claude/.claude/settings.json.template
+
 # Secrets file
 .dotfiles-secrets
