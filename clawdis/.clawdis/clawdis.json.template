@@ -1,0 +1,54 @@
+{
+  "wizard": {
+    "lastRunAt": null,
+    "lastRunVersion": "2.0.0-beta5",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "agent": {
+    "workspace": "${HOME}/clawd"
+  },
+  "whatsapp": {
+    "allowFrom": [
+      "+12147080146",
+      "+14152051800"
+    ]
+  },
+  "imessage": {
+    "enabled": true,
+    "cliPath": "imsg"
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    }
+  },
+  "telegram": {
+    "botToken": "${TELEGRAM_BOT_TOKEN}",
+    "allowFrom": ["1021616650", "8588074404", "-5205577772"],
+    "requireMention": false
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    },
+    "load": {
+      "extraDirs": ["~/.claude/skills"]
+    },
+    "entries": {
+      "openai-whisper-api": {
+        "apiKey": "${OPENAI_API_KEY}"
+      },
+      "skylight": {
+        "email": "${SKYLIGHT_EMAIL}",
+        "password": "${SKYLIGHT_PASSWORD}"
+      },
+      "linear": {
+        "apiKey": "${LINEAR_API_KEY}"
+      }
+    }
+  }
+}

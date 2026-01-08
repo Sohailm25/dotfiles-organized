@@ -1,0 +1,50 @@
+# memory.md - Long-term Memory
+
+## Sohail
+
+- Works at JPMorgan Chase as Senior AI Engineer (started Sept 2024)
+- Based in Plano/Dallas, TX area
+- Timezone: CST
+- Communication style: Direct, technical, no fluff
+
+## Preferences
+
+- Wants hard truths, not flattery
+- Analytical and holistic thinking valued
+- Non-assumptive — ask or verify rather than guess
+
+## Skills & Tools
+
+### Primary skill sources (check BOTH):
+1. **Clawdis skills:** `${HOME}/Repos/experiments/assistant/clawdis/skills/` (injected in system prompt)
+2. **Claude Code skills:** `~/.claude/skills/` — **ALWAYS CHECK THIS TOO**
+
+### Key Claude Code skills:
+- `linear` — Linear API (GraphQL). Config in `~/.claude/config.json`
+- `jobs` — Dual-sync to Linear + Monday.com for job contexts (Amazon, Experian, Britannica, CVS)
+- `limitless` — ?
+- `meetings` — ?
+- `monday` — Monday.com
+- `orchestration` — ?
+- `workflow` / `standup` / `debrief` / `sync-control` — Workflow automation
+- `peekaboo` — macOS UI automation
+- `oracle` — Prompt bundling
+- `morph-mcp` — Morph MCP server
+
+### Linear config (`~/.claude/config.json`):
+- Team ID: `d5c8cdf1-1a11-4f96-ac38-0036175eafb5`
+- Done state: `41170148-524f-46b8-b65e-eb8e6d5bb969`
+- Personal project: `1e8406b0-3c39-41a1-823d-34cfe57423c1`
+- Job projects: Amazon, Experian, Britannica, CVS (each with Linear + Monday IDs)
+
+### API Keys (in `~/.clawdis/clawdis.json`):
+- `skills.entries.linear.apiKey` — Linear API key
+- `skills.entries.openai-whisper-api.apiKey` — OpenAI key for transcription
+
+## Open Loops
+
+*(Nothing yet)*
+
+---
+
+*Updated: $(date +%Y-%m-%d)*

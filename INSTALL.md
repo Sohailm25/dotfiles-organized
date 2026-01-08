@@ -172,6 +172,95 @@ chsh -s /opt/homebrew/bin/fish
 gh auth login
 ```
 
+## LaunchAgents & Clawdbot Setup
+
+This section sets up the personal AI assistant ecosystem (clawdis gateway, slack bridge, etc.).
+
+### Prerequisites
+
+```bash
+# Install Node.js via Homebrew (required for clawdis)
+brew install node
+
+# Clone required repositories
+git clone git@github.com:YOUR_REPO/clawdis.git ~/Repos/clawdis
+git clone git@github.com:YOUR_REPO/assistant.git ~/Repos/experiments/assistant
+
+# Install clawdis dependencies
+cd ~/Repos/experiments/assistant/clawdis && pnpm install
+```
+
+### 1. Create Secrets File
+
+```bash
+# Copy template
+cp ~/dotfiles/launchagents/Library/LaunchAgents/.env.template ~/.dotfiles-secrets
+chmod 600 ~/.dotfiles-secrets
+
+# Edit and fill in actual values
+nvim ~/.dotfiles-secrets
+```
+
+Required secrets:
+- `SLACK_BOT_TOKEN` - Slack bot OAuth token (xoxb-...)
+- `SLACK_APP_TOKEN` - Slack app-level token (xapp-...)
+- `LINEAR_API_KEY` - Linear API key (lin_api_...)
+- `TELEGRAM_BOT_TOKEN` - Telegram bot token from BotFather
+- `OPENAI_API_KEY` - OpenAI API key for whisper transcription
+- `SKYLIGHT_EMAIL` / `SKYLIGHT_PASSWORD` - Skylight credentials
+
+### 2. Run Setup Script
+
+```bash
+# Process templates, create directories, load LaunchAgents
+~/dotfiles/setup.sh
+```
+
+This script:
+- Creates required directories (~/.clawdis/logs, ~/clawd/memory, etc.)
+- Processes .template files with your secrets
+- Installs slack-bridge npm dependencies
+- Loads all LaunchAgents
+
+### 3. Verify Setup
+
+```bash
+# Check agents are running
+launchctl list | grep -E 'sohail|clawd|steipete'
+
+# Check gateway logs
+tail -f ~/.clawdis/logs/gateway.log
+
+# Check slack-bridge logs
+tail -f ~/.clawdis/logs/slack-bridge.log
+
+# Check slack-bot logs
+tail -f ~/Library/Logs/slack-bot.log
+```
+
+### LaunchAgents Included
+
+| Agent | Purpose | Port |
+|-------|---------|------|
+| `com.steipete.clawdis.gateway` | Main clawdis gateway daemon | 18789 |
+| `com.clawd.slack-bridge` | Slack DM to clawdis bridge | - |
+| `com.sohail.slack-bot` | Python slack bot for meetings/tasks | - |
+| `com.sohail.bookmark-sync` | Hourly bookmark sync | - |
+
+### Manual Control
+
+```bash
+# Stop an agent
+launchctl unload ~/Library/LaunchAgents/com.steipete.clawdis.gateway.plist
+
+# Start an agent
+launchctl load ~/Library/LaunchAgents/com.steipete.clawdis.gateway.plist
+
+# Reload after config changes
+launchctl unload ~/Library/LaunchAgents/com.steipete.clawdis.gateway.plist
+launchctl load ~/Library/LaunchAgents/com.steipete.clawdis.gateway.plist
+```
+
 ## System Settings
 
 ### Required for Aerospace

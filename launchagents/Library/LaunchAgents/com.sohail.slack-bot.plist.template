@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.sohail.slack-bot</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>${HOME}/Repos/experiments/assistant/bin/slack-bot</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>WorkingDirectory</key>
+    <string>${HOME}/Repos/experiments/assistant</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>SLACK_BOT_TOKEN</key>
+        <string>${SLACK_BOT_TOKEN}</string>
+        <key>SLACK_APP_TOKEN</key>
+        <string>${SLACK_APP_TOKEN}</string>
+        <key>LINEAR_API_KEY</key>
+        <string>${LINEAR_API_KEY}</string>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>${HOME}/Library/Logs/slack-bot.log</string>
+    <key>StandardErrorPath</key>
+    <string>${HOME}/Library/Logs/slack-bot.error.log</string>
+</dict>
+</plist>

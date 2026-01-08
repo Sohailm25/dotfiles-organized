@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.steipete.clawdis.gateway</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/opt/homebrew/bin/node</string>
+      <string>${HOME}/Repos/experiments/assistant/clawdis/node_modules/tsx/dist/cli.mjs</string>
+      <string>${HOME}/Repos/experiments/assistant/clawdis/src/index.ts</string>
+      <string>gateway-daemon</string>
+      <string>--port</string>
+      <string>18789</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>${HOME}/Repos/experiments/assistant/clawdis</string>
+    <key>StandardOutPath</key>
+    <string>${HOME}/.clawdis/logs/gateway.log</string>
+    <key>StandardErrorPath</key>
+    <string>${HOME}/.clawdis/logs/gateway.err.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>${HOME}/Library/pnpm:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${HOME}/.local/bin</string>
+      <key>CLAWDIS_LAUNCHD_LABEL</key>
+      <string>com.steipete.clawdis.gateway</string>
+    </dict>
+  </dict>
+</plist>

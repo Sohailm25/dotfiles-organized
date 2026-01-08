@@ -31,3 +31,29 @@ zsh/.zsh_sessions/
 # Atuin
 atuin/.config/atuin/history.db
 atuin/.local/share/atuin/
+
+# LaunchAgents - track templates, ignore generated plists
+launchagents/Library/LaunchAgents/*.plist
+!launchagents/Library/LaunchAgents/*.plist.template
+
+# Clawdis - track templates and skills, ignore runtime state
+clawdis/.clawdis/logs/
+clawdis/.clawdis/credentials/
+clawdis/.clawdis/sessions/
+clawdis/.clawdis/media/
+clawdis/.clawdis/clawdis.json
+clawdis/.clawdis/skylight-token.json
+!clawdis/.clawdis/clawdis.json.template
+
+# Clawd - track workspace docs, ignore runtime state
+clawd/clawd/memory/
+!clawd/clawd/memory/.gitkeep
+clawd/clawd/.claude/
+clawd/clawd/slack-bridge/node_modules/
+clawd/clawd/slack-bridge/package-lock.json
+clawd/clawd/slack-bridge/dist/
+clawd/clawd/memory.md
+!clawd/clawd/memory.md.template
+
+# Secrets file
+.dotfiles-secrets
