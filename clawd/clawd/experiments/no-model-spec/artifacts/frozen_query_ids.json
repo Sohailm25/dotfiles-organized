@@ -1,0 +1,11 @@
+{
+  "query_slice_id": "agenticsql_phase1_strat200_v1",
+  "benchmark": "AgenticSQL",
+  "phase": "phase-1",
+  "stratification": {
+    "difficulty_buckets": ["easy", "medium", "hard"],
+    "allocation": "TBD"
+  },
+  "query_ids": [],
+  "status": "placeholder-freeze-pending"
+}

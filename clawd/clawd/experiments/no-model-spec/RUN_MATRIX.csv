@@ -1,0 +1,6 @@
+condition_name,seed,query_slice_id,intended_n,model_config_hash,budget_cap_usd,timeout_seconds,platform,notes
+autoregressive,42,agenticsql_phase1_strat200_v1,200,TBD,50,14400,modal,mandatory baseline
+suffix_decoding_only,42,agenticsql_phase1_strat200_v1,200,TBD,50,14400,modal,mandatory baseline
+routing_only,42,agenticsql_phase1_strat200_v1,200,TBD,50,14400,modal,mandatory baseline
+aso_static,42,agenticsql_phase1_strat200_v1,200,TBD,50,14400,modal,mandatory ASO variant
+aso_bandit,42,agenticsql_phase1_strat200_v1,200,TBD,50,14400,modal,optional if available

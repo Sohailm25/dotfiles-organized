@@ -18,6 +18,12 @@
 - Execution infra lock (added after scope lock):
   - all runs must be executed on Modal.
   - credentials for Modal + W&B + HF were provided by Sohail in Slack source message `1771775507.934979` (sensitive; reference only).
+- Handoff pack now created under `/Users/sohailmohammad/clawd/experiments/no-model-spec/`:
+  - `README.md`, `PREREG.md`, `PLAN.md`, `WORKING_MEMORY.md`
+  - `RUN_MATRIX.csv` template
+  - `artifacts/frozen_query_ids.json` placeholder
+  - `reports/checkpoint_n100.md` template
+- Ready for #experiment-work execution handoff.
 
 ## 2026-02-22 — json-quant
 - Slug: `json-quant`
