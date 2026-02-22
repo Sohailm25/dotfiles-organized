@@ -15,6 +15,9 @@
   - `/Users/sohailmohammad/clawd/experiments/no-model-spec/README.md`
 - Next execution checkpoint:
   - mandatory n=100 pause report with CAL estimates, 95% CIs, success deltas, routing shares, SPEC acceptance, and continue/abort/pivot recommendation.
+- Execution infra lock (added after scope lock):
+  - all runs must be executed on Modal.
+  - credentials for Modal + W&B + HF were provided by Sohail in Slack source message `1771775507.934979` (sensitive; reference only).
 
 ## 2026-02-22 — json-quant
 - Slug: `json-quant`
