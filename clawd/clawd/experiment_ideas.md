@@ -1,5 +1,21 @@
 # Experiment Ideas Log
 
+## 2026-02-22 — no-model-spec
+- Slug: `no-model-spec`
+- Status: Scope locked for phase-1 execution; handoff README created for #experiment-work.
+- Canonical thread: `https://sohailmo.slack.com/archives/C0ADFN5HREE/p1771775251561389`
+- Locked scope:
+  - AgenticSQL only, n=200 stratified
+  - Mandatory baselines: autoregressive, SuffixDecoding-only, routing-only
+  - ASO variants: static (+ bandit if available)
+- Core decision metric: CAL (λ=0.5), with task-success guardrails.
+- Promotion clarity amendment retained:
+  - p<0.05 necessary, CI lower-bound rules required near threshold.
+- Artifact created:
+  - `/Users/sohailmohammad/clawd/experiments/no-model-spec/README.md`
+- Next execution checkpoint:
+  - mandatory n=100 pause report with CAL estimates, 95% CIs, success deltas, routing shares, SPEC acceptance, and continue/abort/pivot recommendation.
+
 ## 2026-02-22 — json-quant
 - Slug: `json-quant`
 - Status: Promoted to #experiment-ideas (`promote-idea` PASS), lifecycle `ideation`
