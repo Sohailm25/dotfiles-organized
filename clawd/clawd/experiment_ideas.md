@@ -16,3 +16,9 @@
   - Evaluate constrained vs unconstrained decoding; separate syntax vs semantics metrics.
   - Pre-register causal necessity/sufficiency tests with random controls.
   - Define side-effect non-inferiority thresholds and stop/go pivot criteria.
+- Deliverables standard locked (promote-ready, not force-ready):
+  1) `README.md` handoff-grade with conservative hypothesis language, explicit syntax/semantics criteria, diagnosis-first objective, and a cheap falsification first step.
+  2) `PREREG.md` with primary metric thresholds, necessity/sufficiency + random controls, abort/pivot rules, budget/runtime caps.
+  3) `PLAN.md` (<=30 lines) with interview completion, 8-15 item literature table, minimum experiment matrix, and exact promote checklist.
+  4) `WORKING_MEMORY.md` with focus, uncertainties, next single action, and `waiting_for` state.
+- No-forcing-progress rule: only call `@ops promote "json-quant" as json-quant` when prereg is concrete, criteria measurable, confounds documented, and unresolved claims are explicitly labeled unknown/hypothesis.
