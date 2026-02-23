@@ -53,7 +53,8 @@
 - Claim ledger (gating doc): `~/clawd/memory/video-sources/activation-steering-claim-ledger-2026-02-23.md`
 - Master doc draft (v1): `~/clawd/memory/video-sources/activation-steering-master-series-doc-draft-2026-02-23.md`
 - Master doc final-candidate (v2): `~/clawd/memory/video-sources/activation-steering-master-series-doc-v2-2026-02-23.md`
-- Status: basis for the activation-steering mini-series (6 episodes)
+- Independent series outline (new direction): `~/clawd/memory/video-sources/activation-steering-independent-series-outline-2026-02-23.md`
+- Status: pivoted to literature-first independent mini-series (not centered on any single paper)
 - Note: Use canonical doc as primary source; use supporting notes + reconciliations + Gemini research/audits for updates to framing, episode arc, and cited findings.
 - Rigor status: active audit mode (claims must be tagged Keep / Keep with Rewording / Hold-Remove in claim ledger before master consolidation).
 
