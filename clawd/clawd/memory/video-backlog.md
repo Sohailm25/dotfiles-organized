@@ -45,8 +45,9 @@
 
 ### Activation Steering Deep Dive — SOURCE OF TRUTH (locked)
 - Canonical doc: `~/clawd/memory/video-sources/activation-steering-deep-dive-source-of-truth-2026-02-23.md`
+- Supporting notes: `~/clawd/memory/video-sources/activation-steering-supporting-notes-2026-02-23.txt`
 - Status: basis for the activation-steering mini-series (6 episodes)
-- Note: Use this as the primary reference over older backlog skeleton drafts.
+- Note: Use canonical doc as primary source; use supporting notes for extra citations, framing, and terminology.
 
 
 ### Reusable Intro Variants (anti-hype + learning contract)
