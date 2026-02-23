@@ -52,6 +52,7 @@
 - Ground-truth vs Gemini reconciliation: `~/clawd/memory/video-sources/activation-steering-ground-truth-vs-gemini-reconciliation-2026-02-23.md`
 - Status: basis for the activation-steering mini-series (6 episodes)
 - Note: Use canonical doc as primary source; use supporting notes + reconciliations + Gemini research/audits for updates to framing, episode arc, and cited findings.
+- Rigor status: active audit mode (claims must be tagged Verified / Needs Rewording / Remove Unless Verified before master consolidation).
 
 
 ### Reusable Intro Variants (anti-hype + learning contract)
@@ -88,7 +89,8 @@ Template:
 **Closer:** "At the end of the day, the goal isn't to look like the smartest person in the room — it's to build real understanding in public, consistently, and let the depth compound."
 **Visuals:** whiteboard-style sketches, architecture diagrams, "what people think vs what's actually happening" comparison drawings, mini-series map (Episode 1→N progression).
 
-### 6-Episode Technical Series: Activation Steering in LLMs 🔥
+### [ARCHIVED — SUPERSEDED BY LOCKED SOURCE OF TRUTH] 6-Episode Technical Series: Activation Steering in LLMs 🔥
+> Do not use this section for current series development. Kept for historical context only.
 **Series Hook:** "Okay, so if you've heard people say 'we can steer model behavior' but it still feels hand-wavy, this series is going to make that concrete — from geometry intuition to real implementation tradeoffs."
 **Series Promise:** By the end, viewers should understand what activation steering is, when it works, when it breaks, and how to reason about it like an engineer (not just a demo poster).
 
