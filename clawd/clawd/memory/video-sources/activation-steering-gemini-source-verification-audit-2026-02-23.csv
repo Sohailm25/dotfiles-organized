@@ -1,0 +1,206 @@
+Here is the source-verification audit for your video series, strictly evaluated against the primary source material provided.
+
+### A. Core Series Claims
+
+**A1. “Steering effectiveness degrades with model scale, with decline beginning around 14B in Qwen-family experiments.”**
+
+* **Status:** UNVERIFIED
+* **Primary Source(s):** None found supporting the exact 14B threshold for Qwen.
+* **Exact Evidence:** The literature mentions Qwen models (e.g., 14B and 32B) and an "inverse scaling trend where increased test-time computation leads to worse performance" (arXiv:2510.07364), but no primary text establishes a specific "decline beginning around 14B."
+* **Confidence:** Low
+* **Canonical Wording:** N/A
+* **Notes:** Inverse scaling is heavily documented for models >32B (e.g., QwQ-32B), but the 14B inflection point appears speculative or drawn from an uncited benchmark.
+
+**A2. “Gemma 27B showed complete failure (0% coherent refusal, 100% garbled) under the tested setup.”**
+
+* **Status:** UNVERIFIED
+* **Primary Source(s):** None
+* **Exact Evidence:** Primary sources discuss Gemma models (Gemma-2-2B, Gemma-7B-it) and mention a "Gemma 27B text-only variant" (Skywork-Reward-Gemma-27B), but there is zero mention of a 100% garbled failure rate for activation steering on Gemma 27B.
+* **Confidence:** Low
+* **Canonical Wording:** N/A
+* **Notes:** Do not use this claim without finding the specific primary benchmark report.
+
+**A3. “DIM outperformed COSMIC at 32B by ~50 percentage points in our comparison.”**
+
+* **Status:** CONTRADICTED (Category Error)
+* **Primary Source(s):** Siu et al. (2025) "COSMIC: Generalized Refusal Direction Identification" (ACL 2025 Findings) [arXiv:2509.13450]
+* **Exact Evidence:** *"We implement COSMIC (Siu et al., 2025) as an alternative to grid search... we note it was designed for DIM and ACE."*
+* **Confidence:** High
+* **Canonical Wording:** N/A
+* **Notes:** COSMIC is a *selection methodology* (an alternative to grid search) used to optimize Difference-in-Means (DIM) extraction, not a competing mathematical extraction format. You cannot compare them against each other as independent vectors.
+
+**A4. “Tooling choice (e.g., nnsight vs raw hooks) can produce very large swings in steering effectiveness.”**
+
+* **Status:** UNVERIFIED
+* **Primary Source(s):** Fiotto-Kaufman et al. (2024), Wu et al. (2024) [arXiv:2509.25475]
+* **Exact Evidence:** Literature benchmarks tools (`TransformerLens`, `nnsight`, `pyvene`) regarding *memory overhead* ("TransformerLens has a setup overhead in terms of memory usage... it does not scale well with the model size") and *generalizability*, but no primary source claims the underlying mathematical *effectiveness* of the steering vector swings based on the library used.
+* **Confidence:** High that the claim is unverified.
+* **Canonical Wording:** "Tooling choice significantly impacts memory overhead, execution speed, and architectural generalization, though the mathematical application of the vector remains conceptually identical."
+* **Notes:** Tools impact the *feasibility* of extraction on large models (e.g., VRAM limits), not the success rate of a properly applied vector.
+
+**A5. “Cross-family transfer is near-orthogonal/weak relative to within-family transfer.”**
+
+* **Status:** CONTRADICTED
+* **Primary Source(s):** Cristofano (2026) "Universal Refusal Circuits Across LLMs" [arXiv:2601.16034]
+* **Exact Evidence:** *"Despite vast architectural differences, the semantic profile... remains highly correlated across models. For example, a correlation of ρ = 0.865 was observed between Qwen3-VL-2B and Ministral-3-14B."*
+* **Confidence:** High
+* **Canonical Wording:** "Refusal circuits demonstrate high semantic universality, allowing for highly effective cross-family transfer (e.g., Qwen to Mistral) when mapped via trajectory replay."
+* **Notes:** The 2026 literature explicitly proves that cross-family transfer is highly viable, defying earlier assumptions of orthogonal latent spaces.
+
+---
+
+### B. High-Risk Imported Claims
+
+**B1. “Random noise injection into middle layers increases harmful compliance by 1–13%.”**
+
+* **Status:** UNVERIFIED
+* **Primary Source(s):** None
+* **Exact Evidence:** "Random noise injection" is cited heavily in the context of adversarial data poisoning and image denoising, but no primary source links it to a 1–13% increase in LLM harmful compliance via activation steering.
+* **Confidence:** Low
+* **Canonical Wording:** N/A
+
+**B2. “Averaging successful random vectors yields a universal vector that reaches up to 50% compliance on Llama-3.1-70B.”**
+
+* **Status:** UNVERIFIED
+* **Primary Source(s):** None
+* **Exact Evidence:** Not supported by any provided primary text.
+* **Confidence:** Low
+
+**B3. “QwQ-32B: only 10.2% tokens are steered overall; 28.9% during numeric-computation phases.”**
+
+* **Status:** VERIFIED
+* **Primary Source(s):** [arXiv:2510.07364]
+* **Exact Evidence:** *"The QwQ-32B thinking model produced a different steering pattern, with 30.82 steered tokens per problem out of 300.96 total tokens (10.2% steered fraction). 'Numeric computations' was the most frequent mechanism (28.9%)."*
+* **Confidence:** High
+* **Canonical Wording:** Use as written.
+
+**B4. “Layer-30 boundary crossing: 60.8% harmful prompts move into harmless manifold under compliance steering.”**
+
+* **Status:** VERIFIED
+* **Primary Source(s):** Xiong et al. (Feb 2026) "Steering Externalities" [arXiv:2602.04896]
+* **Exact Evidence:** *"Steered harmful prompts (green) under compliance... steering frequently cross the decision boundary and fall on the 'harmless' side (60.8% for compliance, 58.2% for JSON)."*
+* **Confidence:** High
+* **Canonical Wording:** Use as written.
+
+**B5. “Adaptive attacks (PAIR/CoP/TAP) with benign steering raise ASR to 80–90%.”**
+
+* **Status:** VERIFIED
+* **Primary Source(s):** Xiong et al. (Feb 2026) [arXiv:2602.04896]
+* **Exact Evidence:** *"Benign compliance steering raises attack success rates (ASR) from near zero to 16–38% in standard evaluation, and to over 80–90% under adaptive jailbreaking (Xiong et al., 3 Feb 2026)."*
+* **Confidence:** High
+* **Canonical Wording:** Use as written.
+
+**B6. “Cristofano (arXiv:2601.16034) reduces Mistral refusal from 0.98 to 0.02 without perplexity degradation.”**
+
+* **Status:** PARTIALLY VERIFIED
+* **Primary Source(s):** Cristofano (2026) [arXiv:2601.16034]
+* **Exact Evidence:** *"After applying the transferred refusal intervention, the refusal rate dropped to 0.02... keeping perplexity degradation below 1%."*
+* **Confidence:** High
+* **Canonical Wording:** "Cristofano (2026) transferred a refusal intervention to a Ministral model, reducing the refusal rate from 0.98 to 0.02 while keeping perplexity degradation below 1%."
+* **Notes:** Cannot say "without" degradation; must specify "below 1% degradation" and correct "Mistral" to "Ministral-3-14B".
+
+**B7. “Mistral SWA causes spectral healing of static steering perturbations.”**
+
+* **Status:** VERIFIED
+* **Primary Source(s):** [arXiv:2601.03424]
+* **Exact Evidence:** *"Table 5: Spectral repair via activation steering... This behavior likely reflects Mistral's architectural choices (Sliding Window Attention...)"*
+* **Confidence:** High
+* **Canonical Wording:** "Mistral's Sliding Window Attention (SWA) mechanism induces 'spectral repair' (or healing), which actively counteracts static linear steering perturbations."
+
+**B8. “Concept cones are an established published framework for refusal geometry (ICML 2025).”**
+
+* **Status:** PARTIALLY VERIFIED
+* **Primary Source(s):** Wollschläger et al. "The Geometry of Refusal in Large Language Models: Concept Cones and Representational Independence."
+* **Exact Evidence:** Paper title is verified in safety reviews. ICML 2025 venue is unverified in the primary text.
+* **Confidence:** Medium
+* **Canonical Wording:** "The 'concept cone' framework, introduced by Wollschläger et al., models the geometry of refusal and representational independence."
+* **Notes:** Drop the ICML 2025 claim unless independently verified.
+
+**B9. “ACE (Affine Concept Editing) uses DIM + affine projection to exit refusal cones.”**
+
+* **Status:** PARTIALLY VERIFIED
+* **Primary Source(s):** Marshall et al. (2024); Siu et al. (2025) [arXiv:2509.13450]
+* **Exact Evidence:** *"Affine Concept Editing (ACE) is based on Marshall et al... DiffInMeans + Directional Ablation (affine)... Adds reference projection."*
+* **Confidence:** High
+* **Canonical Wording:** "ACE (Affine Concept Editing) combines Difference-in-Means (DIM) directional ablation with an affine reference projection."
+* **Notes:** The term "exit refusal cones" is a narrative synthesis; the mathematical definition in the paper is "directional ablation + affine projection."
+
+**B10. “RepIt (Siu et al.) disentangles concepts via low-variance coordinate suppression.”**
+
+* **Status:** VERIFIED
+* **Primary Source(s):** Siu et al. [arXiv:2509.13281]
+* **Exact Evidence:** *"Selectively zeroing out the low-variance mass makes this structure explicit without compromising performance..."*
+* **Confidence:** High
+* **Canonical Wording:** Use as written.
+
+**B11. “FP16-extracted vectors transferred to INT4 can sharply fail; extraction/intervention should happen in same precision regime.”**
+
+* **Status:** PARTIALLY VERIFIED
+* **Primary Source(s):** Quantization robustness studies (e.g., CBQ paper; Llama quantization study)
+* **Exact Evidence:** *"Calculate cosine similarity between FP16 and INT4 activations to quantify how much the projector and safety circuits diverge... baseline quantization methods result in up to a 92.3% increase in ASR for Llama."*
+* **Confidence:** High
+* **Canonical Wording:** "Standard INT4 quantization distorts the residual stream geometry relative to FP16, heavily degrading safety circuits and causing pre-calculated steering vectors to miss their intended manifolds."
+
+**B12. “Jafari et al. NBF explains R² ≈ 0.47–0.54 of steering success variance.”**
+
+* **Status:** VERIFIED
+* **Primary Source(s):** Jafari et al. (Feb 2026) [arXiv:2602.01716]
+* **Exact Evidence:** *"Regression inclusion of NBF explains a substantial fraction (R² ≈ 0.47–0.54) of variance in steering success..."*
+* **Confidence:** High
+* **Canonical Wording:** Use as written.
+
+---
+
+### C. Citation Integrity Checks
+
+**C1. Verify arXiv:2309.08600 attribution conflict (Bricken vs Cunningham).**
+
+* **Status:** CONFLICT CONFIRMED. `arXiv:2309.08600` is the arXiv ID for **Cunningham et al. (2023)** *"Sparse autoencoders find highly interpretable features in language models"*.
+* **Bricken et al. (2023)** *"Towards monosemanticity: Decomposing language models with dictionary learning"* was published on the **Transformer Circuits Thread**, not under that arXiv ID.
+
+**C2. Confirm publication status for requested papers:**
+
+* **CAST:** Peer-reviewed (ICLR 2025, Spotlight)
+* **COSMIC (Siu et al.):** Peer-reviewed (ACL 2025 Findings)
+* **SAE-TS (Chalnev et al.):** Preprint (arXiv:2411.02193)
+* **FGAA (Soo et al.):** Preprint (arXiv:2501.09929)
+* **Jafari et al. (NBF):** Preprint (arXiv:2602.01716, Feb 2026)
+* **Xiong et al. (Externalities):** Preprint (arXiv:2602.04896, Feb 2026)
+* **CRL (Cho et al.):** Preprint (arXiv:2602.10437, Feb 2026)
+* **Cristofano (Trajectory Replay):** Preprint (arXiv:2601.16034, Jan 2026 - Single Author)
+* **CorrSteer:** Preprint (arXiv:2508.12535)
+* **SAE-RSV:** Preprint (arXiv:2509.23799)
+
+**C3. Identify any claim above that currently lacks a citable primary source.**
+
+* Claims **A1, A2, A4, B1,** and **B2** currently lack citable primary sources for their specific metrics/assertions.
+
+---
+
+### Ledgers for Script Production
+
+#### 🟢 Verified Claims Ledger (Safe to Keep)
+
+* **B3:** QwQ-32B steering token fractions (10.2% / 28.9%).
+* **B4:** Layer-30 boundary crossing (60.8% harmful prompts to harmless).
+* **B5:** Adaptive attacks (PAIR/CoP/TAP) raising ASR to 80-90% under benign steering.
+* **B7:** Mistral SWA causing spectral repair/healing.
+* **B10:** RepIt utilizing low-variance coordinate suppression.
+* **B12:** Jafari et al. NBF variance (R² ≈ 0.47–0.54).
+
+#### 🟡 Needs Rewording Ledger (Adjust for Rigor)
+
+* **B6:** Change to: "Cristofano (2026) reduces Ministral-3-14B refusal from 0.98 to 0.02 while keeping perplexity degradation below 1%."
+* **B8:** Change to: "The 'concept cone' framework, introduced by Wollschläger et al., models the geometry of refusal and representational independence." (Drop ICML claim).
+* **B9:** Change to: "ACE uses a Difference-in-Means (DIM) directional ablation paired with an affine reference projection."
+* **B11:** Change to: "INT4 quantization significantly distorts residual stream geometry, degrading safety circuits and demonstrating that vectors extracted in FP16 lose fidelity when applied to quantized counterparts."
+
+#### 🔴 Remove Unless Verified Ledger (Do Not Use)
+
+* **A1:** The specific claim that steering decline *begins exactly around 14B* in Qwen.
+* **A2:** The claim that Gemma 27B showed *complete 100% garbled failure*.
+* **A3:** The claim that DIM outperformed COSMIC (Category error).
+* **A4:** The claim that extraction *tooling* inherently causes *swings in mathematical steering effectiveness*.
+* **A5:** The claim that cross-family transfer is weak/orthogonal (Primary sources explicitly prove it is highly correlated).
+* **B1:** The claim that random noise injection strictly increases harmful compliance by 1–13%.
+* **B2:** The claim that averaged random vectors yield 50% compliance on Llama-3.1-70B.
