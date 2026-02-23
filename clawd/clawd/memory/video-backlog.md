@@ -47,8 +47,9 @@
 - Canonical doc: `~/clawd/memory/video-sources/activation-steering-deep-dive-source-of-truth-2026-02-23.md`
 - Supporting notes: `~/clawd/memory/video-sources/activation-steering-supporting-notes-2026-02-23.txt`
 - Reconciliation feedback: `~/clawd/memory/video-sources/activation-steering-reconciliation-feedback-2026-02-23.md`
+- Gemini research dump: `~/clawd/memory/video-sources/activation-steering-gemini-research-2026-02-23.csv`
 - Status: basis for the activation-steering mini-series (6 episodes)
-- Note: Use canonical doc as primary source; use supporting notes + reconciliation feedback for updates to framing, episode arc, and cited findings.
+- Note: Use canonical doc as primary source; use supporting notes + reconciliation feedback + Gemini research for updates to framing, episode arc, and cited findings.
 
 
 ### Reusable Intro Variants (anti-hype + learning contract)
