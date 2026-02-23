@@ -50,9 +50,10 @@
 - Gemini research dump: `~/clawd/memory/video-sources/activation-steering-gemini-research-2026-02-23.csv`
 - Gemini source-verification audit: `~/clawd/memory/video-sources/activation-steering-gemini-source-verification-audit-2026-02-23.csv`
 - Ground-truth vs Gemini reconciliation: `~/clawd/memory/video-sources/activation-steering-ground-truth-vs-gemini-reconciliation-2026-02-23.md`
+- Claim ledger (gating doc): `~/clawd/memory/video-sources/activation-steering-claim-ledger-2026-02-23.md`
 - Status: basis for the activation-steering mini-series (6 episodes)
 - Note: Use canonical doc as primary source; use supporting notes + reconciliations + Gemini research/audits for updates to framing, episode arc, and cited findings.
-- Rigor status: active audit mode (claims must be tagged Verified / Needs Rewording / Remove Unless Verified before master consolidation).
+- Rigor status: active audit mode (claims must be tagged Keep / Keep with Rewording / Hold-Remove in claim ledger before master consolidation).
 
 
 ### Reusable Intro Variants (anti-hype + learning contract)
