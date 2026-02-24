@@ -25,6 +25,24 @@
   - `reports/checkpoint_n100.md` template
 - Ready for #experiment-work execution handoff.
 
+## 2026-02-24 — no-model-spec (Professor BLOCKED)
+- Slug: `no-model-spec`
+- Status: BLOCKED at sanity gate pending evaluator validity fixes.
+- Professor verdict (high confidence): current failure interpretation is confounded by evaluator/schema+dialect issues; n=100 must remain blocked.
+- Confirmed issue snapshot:
+  - `missing_table=100%` observed, but row-level evidence suggests mis-bucketing (dialect mismatch / unsupported statements / parse handling conflated).
+  - At least one plausible pred SQL still labeled parse-invalid with `missing_table`, indicating taxonomy/coercion artifacts.
+- Required preconditions before re-run:
+  1) lock SQL dialect policy + normalization,
+  2) emit per-row materialized schema artifact,
+  3) split error taxonomy (`missing_table`, `unsupported_statement`, `parse_failed`, `dialect_mismatch`, `context_invalid`),
+  4) emit row-level debug traces with exact exception + label reason,
+  5) rerun sanity gate only (n=10 x 2) after instrumentation lands.
+- Safe claim language:
+  - "Sanity gate is blocked by unresolved evaluator/schema-dialect validity issues; model quality cannot be reliably inferred yet."
+- Smallest valid next test:
+  - Run one micro-batch (10 rows) through updated evaluator and manually audit 5 failures for label correctness before any scale-up.
+
 ## 2026-02-22 — json-quant
 - Slug: `json-quant`
 - Status: Promoted to #experiment-ideas (`promote-idea` PASS), lifecycle `ideation`
