@@ -4,6 +4,10 @@ single source of truth for the feed (X For You) and curated (bookmarks) digest j
 both jobs read this file end to end before doing anything. every rule here is
 non-negotiable.
 
+**also load:** `~/clawd/contentforge/stories.md` — sohail's canonical war stories.
+first-person "i did X" claims and specific numbers MUST come from there (or from a
+verbatim source-tweet/reply quote). never invent.
+
 last updated: 2026-05-14
 
 ---
@@ -432,6 +436,116 @@ verbatim from sohail's essays. cadence target.
   uniquely obsessed with building? that's the edge they can't copy."
 - "death doesn't change your circumstances. it changes your perception. which means
   the perception was always available."
+
+---
+
+## hard rules (calibration patches, added 2026-05-14)
+
+these rules override anything else in the guide. they were added after the first
+production run produced fabricated numbers, paraphrased sentiment deltas, essay-prose
+scripts, and 3-of-100 volume.
+
+### rule 1 — no fabricated specifics
+
+every numeric claim ("60% reduction", "30% throughput drop", "2M docs") and every
+first-person moment ("we lost X", "i shipped Y", "i watched Z") MUST trace to:
+
+  (a) a named story in `~/clawd/contentforge/stories.md`, OR
+  (b) a verbatim quote from the source tweet, OR
+  (c) a verbatim quote from a fetched reply
+
+if no real anchor exists for a scripted moment, you have two options:
+
+  1. drop the moment and use a generalized framing — *"i've watched teams hit this
+     pattern"* — with NO first-person specific claim, NO invented number.
+  2. say so directly: *"i don't have a war story for this one. but the pattern is..."*
+
+never invent. never paraphrase a real number as a different real-sounding number.
+never compose a composite story that didn't happen. composite stories destroy
+credibility on a single tiktok comment ("did you actually run vLLM at QSR? what
+company?"). the slop blacklist catches AI-generic phrasing. this rule catches
+AI-generic *facts*. the second is worse.
+
+### rule 2 — sentiment delta must quote, not paraphrase
+
+the `sentiment delta` field in the header is NOT a summary. it is a verbatim
+citation. required shape:
+
+```
+sentiment delta:
+  tweet's claim: "<one-sentence paraphrase of the original>"
+  top critical reply (@author, verbatim): "<exact quote, max 200 chars>"
+  the delta: <one sentence on what the reply reveals that the tweet hides>
+```
+
+if no critical reply exists OR no meaningful delta is present, write exactly:
+`sentiment delta: no delta — original frame stands.`
+
+forbidden: summaries like *"replies agree on pain but split on the fix"* or
+*"replies are mixed."* that's paraphrase, not delta. the replies were fetched
+into `~/assistant/data/feed/raw/<ts>/replies/<tweet-id>.json` precisely so you
+could open them and quote. do that.
+
+### rule 3 — the spoken test
+
+every sentence in a tiktok script must pass: **could i say this out loud in one
+breath?** if not, break it up.
+
+forbidden in scripts:
+- comma-then-list with three or more items
+  ✗ "model behavior, infra limits, compliance reviews, and customer trust"
+  ✓ "model behavior. infra limits. compliance reviews. customer trust. all in one week."
+- semicolons (don't exist in speech)
+- nested clauses with "which" or "while" used as filler subordination
+- written-prose connectives ("furthermore", "additionally", "thus", "hence")
+
+required:
+- periods over commas. break thoughts into separate sentences.
+- one thought per sentence.
+- asymmetric rhythm: short.short.long.short. never three sentences of equal length.
+- contractions everywhere.
+
+read each script in your head before submitting. if it reads like a linkedin
+post, it fails. if it reads like a voice memo, it ships.
+
+### rule 4 — value bar calibration
+
+at the time these rules were added, the agent was filtering 100 tweets → 3 items.
+that's too strict. **the bar is "is there ANY substance," not "would this blow the
+ICP's mind."**
+
+target volume: **8-15 items per 100 tweets** clears, of which most support multiple
+tier scripts. if you're at 3, your bar is too high. if you're at 50, too low.
+
+what clears (examples — codify, don't restrict to these):
+- any model release with a concrete behavior change (not just announcement noise)
+- any production war story with real numbers
+- any contrarian frame the ICP would screenshot
+- any career / comp / role signal relevant to engineers transitioning into AI
+- any technical disagreement between named practitioners
+- any deployment failure, infra incident, or "what i learned running X at scale"
+- any infrastructure announcement with named tradeoffs (e.g. vLLM 0.x release notes)
+- any paper drop with a concrete technical claim
+
+what drops:
+- "huge if true" / "wild" / pure reaction tweets with no substance
+- screenshots of LLM outputs with no commentary
+- announcements with no concrete claim ("excited to share..." with no detail)
+- dunks, beefs, drama, sub-tweets
+- political / culture-war content
+- posts about sohail himself
+
+### rule 5 — when in doubt, ship the item not-fully-scripted
+
+if an item clears the bar but you don't have enough context to write a *good* script,
+output the item with:
+
+- the header (HOOK, tiers, Bridge, POV, sentiment delta, source) — fully populated
+- script slot per tier with the literal text: `(skipped — need a [stories.md anchor /
+  reply quote / external context] to write this without fabricating)`
+
+a header without a script is more useful than a fabricated script. sohail can decide
+whether to script it manually or drop it.
 
 ---
 
