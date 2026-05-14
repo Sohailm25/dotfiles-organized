@@ -201,17 +201,79 @@ weight. no setup. no "today i want to talk about." no "hey guys."
 
 ---
 
-## pacing and script length
+## the 6-beat structure
 
-- **T1**: 21-34s. ~50-80 words spoken. 2-3 beats. hook in 1.5s. payoff in last 2 sentences.
-- **T2**: 30-60s. ~80-160 words spoken. 3-4 beats. hook in 1.5s. personal stake by
-  sentence 2. payoff = quotable frame, not advice.
-- **T3**: 45-90s. ~120-220 words spoken. 4-6 beats. hook in 1.5s. real numbers required.
-  show actual code/dashboard if possible (cut to screen).
+every script follows this beat order. lost viewers stay because they get summary +
+primer up front. credibility hits in the middle. payoff lands at the end.
 
-3-4 beats per 30 seconds is the algorithm's preferred rhythm. each beat = one complete
-thought or visual change. cut the moment the value lands. do not pad to hit the upper
-end of a tier's length range.
+1. **hook** (5-8 words). claim, admission, or contrarian frame. lands by second 1.5.
+2. **tweet summary** ("here's what the tweet actually says"). one sentence. quote the
+   source enough that someone scrolling can follow without clicking through.
+3. **concept primer** ("for anyone lost, here's the thing..."). 1-3 sentences that
+   bring along viewers who don't already know the technical terrain. translate jargon
+   without dumbing it down — assume curiosity, not expertise.
+4. **personal stake** (lived moment from stories.md). real company, real time, real
+   numbers. anchored to one of the 16 stories. NEVER invented.
+5. **nuance / caveat / banter** ("here's where i'd push back" / "actually wait" /
+   "the messy part is..."). partial pushback, complication, admission of uncertainty.
+   THIS is what makes it feel like sohail talking, not an LLM.
+6. **payoff** (quotable frame, 1-2 sentences). aphoristic, takeable, screenshottable.
+   not advice. not "go do X." a frame the viewer carries.
+
+beats 2 and 3 are NEW (added after the first production run shipped scripts that were
+punchy but had no on-ramp for lost viewers and no summary of what was being reacted to).
+beat 5 is also NEW — without it, scripts read as LinkedIn essays. WITH it, they sound
+like a real person with real reactions.
+
+## pacing and script length (revised — longer for context + banter)
+
+- **T1** — 30-50s. ~75-135 words spoken. 4-5 beats (compress primer or skip it if
+  the frame doesn't need it). hook contrarian or admission. heavier on nuance/banter
+  than on technical primer. payoff = quotable frame.
+- **T2** — 50-90s. ~140-240 words spoken. all 6 beats. hook authority+admission or
+  specific number. translate the technical WHY. include at least one nuance/caveat
+  moment. real numbers from stories.md required.
+- **T3** — 75-150s. ~200-380 words spoken. all 6 beats expanded. hook specific number
+  or demonstration. real numbers required, multiple if possible. include `[Cut to
+  screen]` cues. nuance section can run longer (deeper technical pushback).
+
+3-4 beats per 30 seconds is still the rhythm. do NOT pad to hit the upper end. cut
+when the value lands. but DO use the budget — punchy isn't the same as thin.
+
+### what counts as a "beat"
+
+a beat is a complete thought OR a visual change. each beat earns 5-15 seconds of
+screen time. transitions between beats can be cuts, text overlays, or just a pause.
+not every beat needs a stage direction.
+
+## banter and caveats (the human layer)
+
+without this, scripts sound like LLM-generated thought leadership. WITH this, they
+sound like sohail processing the take in real time.
+
+forms of banter that work:
+- `"honestly..."` — for admissions of reality vs expectation
+- `"actually wait..."` — for self-correction mid-thought
+- `"the messy part is..."` — for introducing a caveat
+- `"i'd push back on this — at least partially..."` — for partial disagreement
+- `"i don't have a clean number for this, but..."` — for honest uncertainty
+- `"this is the part most people gloss over..."` — for landing a nuance
+
+stage directions that signal banter (use sparingly, no more than 2-3 per script):
+- `[half-shrug]`
+- `[quick laugh at own admission]`
+- `[looks off-camera for a second]`
+- `[exhales]`
+
+forbidden in the banter slot:
+- generic motivational framing ("hot take: X is wrong")
+- engagement-bait pretending to be banter ("you're not gonna like this but...")
+- hype dressed as humility ("real talk: this is actually huge")
+
+the banter beat is also where you put **what the source got wrong** — i.e. partial
+pushback against the original tweet. that's the differentiated angle. you read the
+tweet, you live the production reality, you can land "they got it 80% right but the
+real story is...".
 
 ---
 
@@ -221,26 +283,40 @@ stage directions in brackets. mark cuts. indicate text overlays where the spoken
 should be reinforced visually (word-by-word sync text is table stakes in 2026, +25%
 completion correlation).
 
-example (T2, ~45s):
+### example (T2, ~70s, 6-beat with banter)
 
 ```
 [Open on face. Casual. Laptop visible.]
 
-"your inference bill is 10x what it should be. here's the part vendors won't tell you.
+[BEAT 1 — hook]
+"your inference bill is 10x what it should be."
 
 [Text overlay: "10x"]
 
-i ran vLLM in production for two years at a QSR doing drive-thru voice. KV cache
-fragmentation alone cost us 30% throughput after 12 hours of uptime.
+[BEAT 2 — tweet summary]
+"this tweet from @raphbaph claims vLLM solved inference cost. with 4k likes. it
+absolutely did not."
+
+[BEAT 3 — concept primer]
+"real quick — vLLM is the open-source serving engine most teams use behind ChatGPT-
+style apps. paged attention, continuous batching, the whole stack. on paper, it's
+beautiful."
+
+[BEAT 4 — personal stake from stories.md]
+"i ran vLLM in production for two years at a QSR doing drive-thru voice. sub-1.5s
+latency was the bar. KV cache fragmentation alone cost us 30% throughput after
+12 hours of uptime."
 
 [Cut to screen: vLLM dashboard, throughput cliff visible]
 
-continuous batching helps on paper. in production you get throughput cliffs that look
-like single bottlenecks but are 2 to 3 subsystems failing at once.
+[BEAT 5 — nuance / banter / pushback]
+"and here's the part the tweet skips — those throughput cliffs are never one thing.
+[half-shrug] it's usually 2 to 3 subsystems failing at the same time. router, the
+KV cache, the routing tier, the model server. honestly, debugging this taught me
+more than any LLM paper i've read."
 
-[Back on face]
-
-inference is infrastructure. if your vendor talks about it like a library, find a
+[BEAT 6 — payoff]
+"inference is infrastructure. if your vendor talks about it like a library, find a
 different vendor."
 
 [Lower-third overlay during last 2 sentences: sohailmo.ai]
