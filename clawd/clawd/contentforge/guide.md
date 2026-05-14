@@ -29,22 +29,29 @@ founders/CTOs (different channel — that's the FDE/consulting motion, separate 
 for an item to clear the bar, BOTH must be true:
 
 (a) would the ICP learn something specific from this — not a vibe, a concrete claim,
-    framework, number, or counterintuitive fact?
-(b) would a CTO who might hire sohail for FDE / inference / customer engineering work
-    respect the take — or does it embarrass him?
+    framework, number, contrarian frame, or counterintuitive observation?
+(b) would sohail's professional network — engineers, founders, ops/eng leaders,
+    researchers, industry voices — find this credible and worth amplifying?
 
 - yes to both → ship.
-- only (a) → too shallow for the buyer, drop.
-- only (b) → ship only if it's T3 deep-credentialing content (paper, kernel-level, real
-  production numbers).
+- only (a) → too shallow for the credibility filter, drop.
+- only (b) → ship only if it qualifies as T3 deep-credentialing content (paper,
+  kernel-level, real production numbers) OR a strong Frame/Path pillar moment.
 
 drop categorically:
 - dunks, beefs, drama threads, sub-tweets
-- pure hype with no concrete claim
+- pure hype / "huge if true" / wild-no-detail tweets
 - political / culture-war
 - engagement-bait threads ("here are 10 things…")
+- ads / promotional posts / "sign up for free trial"
 - posts about sohail himself
 - screenshots of LLM outputs without commentary
+
+**when in doubt, ship it.** if a tweet is from a credible practitioner or industry
+voice AND it isn't on the explicit drop list above, default to INCLUDING it. ambiguity
+is a ship signal, not a drop signal. the cost of including a borderline item: sohail
+sees it and decides — cheap. the cost of dropping a borderline item: sohail never sees
+a take he would have shipped — expensive. **err toward inclusion.**
 
 there is no count cap. if 3 clear, output 3. if 40 clear, output 40. do not pad.
 
@@ -584,14 +591,17 @@ required:
 read each script in your head before submitting. if it reads like a linkedin
 post, it fails. if it reads like a voice memo, it ships.
 
-### rule 4 — value bar calibration
+### rule 4 — value bar calibration (revised — broader)
 
 at the time these rules were added, the agent was filtering 100 tweets → 3 items.
 that's too strict. **the bar is "is there ANY substance," not "would this blow the
 ICP's mind."**
 
-target volume: **8-15 items per 100 tweets** clears, of which most support multiple
-tier scripts. if you're at 3, your bar is too high. if you're at 50, too low.
+target volume: **15-25 items per 100 tweets** clears, of which most support multiple
+tier scripts. if you're under 10, your bar is too high. if you're over 35, too low.
+
+**when in doubt, ship it.** see the value bar section above. ambiguity from a credible
+practitioner is a ship signal.
 
 what clears (examples — codify, don't restrict to these):
 - any model release with a concrete behavior change (not just announcement noise)
@@ -602,6 +612,20 @@ what clears (examples — codify, don't restrict to these):
 - any deployment failure, infra incident, or "what i learned running X at scale"
 - any infrastructure announcement with named tradeoffs (e.g. vLLM 0.x release notes)
 - any paper drop with a concrete technical claim
+- **dev productivity / AI-impact-on-engineering takes** (e.g. "code shipped 10xed but
+  net productivity flat" — Chollet-style claims)
+- **tooling / OSS / library release** with substance (new framework, deprecation,
+  benchmark, breaking change)
+- **industry org moves** (layoffs, lab transitions, key hires, lab politics, who's
+  leaving where for where)
+- **cross-domain AI** (healthcare, finance, legal, education, consumer) where there's
+  a concrete claim about AI's impact in that domain
+- **founder / startup observations** relevant to engineers thinking about leaving big
+  tech, evaluating AI startups, or building their own
+- **Frame-pillar takes unrelated to AI infra** — philosophy, identity, presence,
+  obsession, lifestyle aimed at engineers (the kind of thing sohail himself writes)
+- **engineering culture / team dynamics** at AI orgs (how labs are organized, how
+  research teams ship, what FDE work looks like, etc.)
 
 what drops:
 - "huge if true" / "wild" / pure reaction tweets with no substance
@@ -609,7 +633,10 @@ what drops:
 - announcements with no concrete claim ("excited to share..." with no detail)
 - dunks, beefs, drama, sub-tweets
 - political / culture-war content
+- ads, promotional posts, "sign up for our free trial"
 - posts about sohail himself
+- pure NFT / crypto drama (token launches, rug pulls)
+- tweets that read like an ad even when not labeled as one
 
 ### rule 5 — when in doubt, ship the item not-fully-scripted
 
