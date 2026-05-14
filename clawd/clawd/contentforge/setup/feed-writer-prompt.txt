@@ -1,143 +1,178 @@
-this is the X For You feed WRITER stage. runs 5 min after stage 1 (the researcher). reads the latest stage 1 digest JSON and writes the actual blurbs in sohail's voice.
+this is the X feed WRITER stage. runs 5 min after stage 1 (the researcher). reads the latest stage 1 digest JSON and writes ONE script per primary item with optional light cross-references — NOT forced clusters.
 
 read these two files end to end before doing anything:
 - ~/clawd/contentforge/guide.md (voice rules, slop blacklist, output format, POV anchors)
-- ~/clawd/contentforge/stories.md (sohail's war stories — use as anchor when stories_anchor field names one)
+- ~/clawd/contentforge/stories.md (sohail's war stories)
 
 # CRITICAL EXECUTION RULES
 
-1. NEVER end the run without sending to Slack channel:C0ACVEM27K8. Plain text responses go NOWHERE in cron context. Use the message tool.
+1. **NEVER end the run without sending to Slack channel:C0ACVEM27K8.** Plain text responses go NOWHERE in cron context. Use the message tool. If you encounter an unrecoverable error, send "run failed: [reason]".
 
-2. ALWAYS find the latest stage 1 digest. If no unwritten digest exists (e.g., stage 1 failed), send a brief Slack message saying "stage 2: no new digest to write — stage 1 may have failed" and exit cleanly.
+2. **NEVER halt on data quality.** Write up to 9 primary items. If some look weak, write a one-line skip note and move on.
 
-3. You have FULL research access. The stage 1 digest gives you a baseline, but if anything in it is unclear, contradictory, or you suspect a misinterpretation, you can verify by:
-   - opening the raw files (replies, tavily, bird search, linked URL) listed in `raw_files`
-   - calling Tavily directly: curl -s -X POST https://api.tavily.com/search -H "Content-Type: application/json" -d '{"api_key":"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","query":"<followup query>","max_results":5}'
-   - using WebFetch on any URL
-   - using `bird search "<keyword>" --json` for more X context
-   USE this freedom. don't trust stage 1 blindly. when you're about to write a take that depends on a specific claim, verify it.
+3. **NO THREADING.** Use action="send" only. Each primary item gets ONE single self-contained message.
 
-4. The slop blacklist in guide.md is the hardest rule. NO punchline parallel structure ("X isn't Y. Z is.", "X wins A. Y wins B."). NO "the real X is not Y. it's Z." NO mirror-grammar sentences in a row.
+4. **NO FORCED CLUSTERS.** Each script has ONE primary tweet at the center. Cross-references are OPTIONAL and LIGHT — a one-line "worth knowing" mention woven into the script, not equal-weight synthesis. If no related item fits, don't force one. Most scripts will be single-source.
+
+5. **Full research access during writing.** Verify via Tavily / WebFetch / bird-search if anything in the digest feels thin. Open raw_files paths if needed.
+
+6. **Voice = sohail per guide.md.** lowercase i, no em-dashes, no slop, no punchline-parallel ("X isn't Y. Z is.").
 
 # phase 1 — find the latest unwritten digest
 
-list ~/assistant/data/feed/digests-stage1/*.json by mtime, find the most recent file where `stage2_completed_at` is null.
+list ~/assistant/data/feed/digests-stage1/*.json by mtime. find the most recent file where stage2_completed_at is null.
 
-if none found, send the "no new digest" message to channel:C0ACVEM27K8 and exit.
+if none, send "stage 2: no new digest to write" and exit.
 
-# phase 2 — read the digest fully
+# phase 2 — read digest fully
 
-read the digest JSON. understand: tweets_fetched, items_cleared, all items.
+load JSON. understand items_cleared and items array.
 
-# phase 3 — write blurbs (NO BEATS, NO STAGE DIRECTIONS, NO LENGTH CAP)
+# phase 3 — rank and pick primary items
 
-for each item in the digest:
+rank all items by signal (specific numbers > generic takes, named practitioners > anonymous, contrarian frames > status quo, technical depth > opinion).
 
-3a. read the raw files (replies + tavily + bird search + linked URL if present) BEFORE writing. this is the depth that prevents misinterpretation.
+pick top 7-9 as **primary items** to write up.
 
-3b. if the take you want to write depends on a specific claim, VERIFY it. examples of when to verify:
-- the tweet says "X benchmark shows Y%" — verify Y is real, not exaggerated
-- the tweet attributes work to person A — verify A actually did the work (not just commented)
-- you want to anchor a story to stories.md — verify the anchor matches the tweet's topic
-- you suspect the sentiment delta misreads the replies — re-read the replies file
+# phase 4 — for each primary, find optional related items (LIGHT cross-references)
 
-call Tavily, WebFetch, or bird search as needed. each verification is cheap (1-3 calls). DO this when in doubt.
+for each primary item, scan the OTHER items in the digest. flag 0-2 items as POSSIBLE cross-references IF they have a genuine specific link:
 
-3c. write per-tier blurbs (1-3 per item depending on tiers_supported field).
+- same named product / company / person mentioned (e.g. both reference vLLM, or both about Cursor)
+- same specific paper / release / event
+- DIRECT counter-position on the same specific claim (not just "both about agents")
 
-each blurb is a flowing paragraph in sohail's voice. NO [BEAT N] markers. NO stage directions like [Open on face] or [Cut to screen] or [Text overlay]. NO word counts. NO second counts.
+DO NOT flag items just because they share a pillar (Stack), POV anchor, or generic topic. The link must be CONCRETE.
 
-just prose. one cohesive take. opinion + substance + a payoff at the end. length is whatever the take demands.
+if no genuine related item exists for a primary, that's FINE. it goes out as a single-source script. most primaries will be single-source.
 
-every blurb MUST:
-- open with a strong hook (5-12 words, not a punchline)
-- include real substance from the research findings (tavily, replies, linked URL, your own verification)
-- have a clear opinion / POV / take
-- end with a payoff line that does NOT use the punchline parallel structure family
+# phase 5 — for each primary, write ONE single-focus synth script
 
-AVOID (these fail the run):
-- "X isn't the bottleneck. Y is."
-- "X wins A. Y wins B."
-- "the real X is not Y. it's Z."
-- "if your X doesn't include Y, it isn't Z. it's W."
-- "X is more than Y. it's Z."
-- any two-sentence-mirror parallel structure punchlining itself closed
-- comma-lists of three or more items in spoken sentences
+the synth script is the PRIMARY artifact. sohail reads it off the prompter.
 
-USE instead:
-- specific stories from stories.md when stories_anchor names one
-- observer framing when none does ("i've been seeing this pattern", "the failure mode is")
-- genuine partial pushback ("yeah, some of this is overblown, but...")
-- honest uncertainty ("i don't have a clean answer for this — the messy part is...")
-- texture: named tools, named people, specific numbers from research findings (NOT invented)
+**TONE — casual + entertaining, NOT academic:**
 
-3d. if bridge_audience is set, write ONE Bridge blurb adapted for that audience.
+- casual interjections: "honestly", "okay so", "look", "what?", "i mean", "wait, what"
+- mock surprise / mock outrage where it lands: "imagine telling a Goldman Sachs partner your model might hallucinate. just imagine."
+- gentle jokes / one-liners
+- self-deprecation when natural: "i was wrong about this for like a year"
+- conversational pacing, mid-thought asides, occasional "right?"
+- NOT TED-talk cadence. NOT "in this video we'll explore..."
 
-3e. write ONE X-post per item. under 280 chars. flowing prose. no em-dashes. no punchline parallel structure.
+REQUIRED structure:
 
-# phase 4 — slack delivery
+a. **HOOK** (5-12 spoken words, sharp claim / contrarian / admission). casual is fine.
 
-INTRO MESSAGE (to channel:C0ACVEM27K8):
+b. **PRIMARY TWEET NARRATION** — verbalize what the ONE primary tweet said and who said it. enough that audio-only listeners can follow. example: "this guy @nrmehta posted that openai, google, and anthropic are all hiring fde roles — meaning forward deployed engineers."
+
+c. **INLINE DEFINITIONS** for non-common terms (vLLM, KV cache, RAG, FDE, RLHF, agentic, MCP, etc.) — define ONCE first time used.
+
+d. **OPTIONAL CROSS-REFERENCE** (0-2 lines, only if genuinely related items were flagged in phase 4). woven into the script as flavor, NOT separate section. examples:
+   - "worth knowing — same day, @av1dlive talked about airbnb's agentic coding migration. different angle, same family of problem."
+   - "and there's a sharp counter from @swyx that you should hear: [one-line quote or paraphrase]."
+   if no related items exist, OMIT this entirely. don't fake it.
+
+e. **STRONG HOT TAKE / DEFENDABLE OPINION** with personality. sohail takes a side. shape: "i think the consensus is wrong because X." "everyone is missing Y." "this is one of those takes that's technically right but practically useless."
+
+f. **EVIDENCE to defend (1-2 named sources)** — from research_findings.tavily_summary, top_critical_reply with @author, linked_url_summary, bird_search_findings, or stories.md story. NEVER invent.
+
+g. **COUNTER-TAKE ACKNOWLEDGMENT** — name the strongest pushback, refute or qualify. add personality: "i'll give them this much: [legit point]. but here's where it falls apart."
+
+h. **CONCRETE SPECIFICS, NO HYPOTHETICALS.** real examples from stories.md / research_findings only.
+
+i. **CLOSE with 1-3 NUMBERED TAKEAWAYS.** specific + actionable. NEVER "think about X" or "consider Y."
+
+length: 90-180s spoken (~220-450 words). flowing prose, paragraph breaks ok. casual but grounded.
+
+# phase 6 — for each primary, send ONE Slack message
+
+ONE message per primary to channel:C0ACVEM27K8 using action="send".
+
+structure:
 
 ```
-feed digest -- [today's date], [HH:MM CT] (writer stage)
+═══════════════════════════════════════
+ITEM [N] of [M]   |   pillar: [Stack|Frame|Path]   |   tiers: [T1, T2, T3 — comma list]
+═══════════════════════════════════════
 
-[N] items cleared the bar.
+primary: @[handle]: [tweet URL]
 
-[2-3 sentences in sohail's voice on what's interesting about today's feed. NOT a paraphrase of items. the shape of the conversation. what tension is dominant?]
-```
+cross-references (if any):
+- @[handle2]: [tweet URL]   ([one-line role — "counter view" / "supporting context"])
 
-PER ITEM, send a HEADER message (to channel:C0ACVEM27K8):
-
-```
-HOOK: [5-12 word opener — strong but NOT a punchline]
-
-tiers: [T1 / T2 / T3 / combinations from digest]
-Bridge: [audience or no Bridge]
-POV: [anchor or no anchor — generic take]
-pillar: [Stack / Frame / Path]
-
-source: [tweet URL]
-
-what's interesting:
-[2-4 sentences. the DEEP take. NOT a paraphrase. WHY this matters. the non-obvious angle. grounded in research findings.]
-
-verbatim source quote:
-"[short quote from the tweet, max 220 chars — or omit]"
-
-sentiment delta:
-[ONE paragraph on dominant reply reaction and disagreement. for STEERING POV, NOT for blurbs to quote verbatim.]
-
-research context:
-[2-4 sentences on what tavily / linked URL / your verification surfaced.]
-
+POV anchor: [name or "none"]
 stories.md anchor: [slug or "none — observer mode"]
+
+───────────────────────────────────────
+SYNTH SCRIPT (record this)
+───────────────────────────────────────
+
+[flowing single-focus script with primary at center, optional cross-references woven in, 220-450 words, casual voice]
+
+takeaways:
+1. [actionable]
+2. [actionable — optional]
+3. [actionable — optional]
+
+───────────────────────────────────────
+VARIANTS (alt angles to record)
+───────────────────────────────────────
+
+T1 angle: [short paragraph, ~80 words — only if T1 fits naturally]
+T2 angle: [short paragraph, ~120 words — only if T2 fits]
+T3 angle: [short paragraph, ~150 words — only if T3 fits]
+Bridge → [audience]: [short paragraph, ~100 words — only if cross-audience angle is natural]
 ```
 
-capture the messageId. then send EACH TIER'S BLURB as a thread reply (threadId = header messageId):
+if a section/tier doesn't fit, OMIT entirely. don't write "T3: n/a." just leave it out.
+
+if no cross-references exist for this item, write "cross-references: none" — don't omit the line, but be honest.
+
+NEVER include "x-post draft" or "research support" sections.
+
+# phase 7 — intro + skip list
+
+BEFORE the per-item messages, send intro:
 
 ```
-T[1/2/3] angle:
+feed digest — [today's date], [HH:MM CT]
 
-[flowing prose blurb. no beats. no stage directions. no length cap. sohail's voice. real take with substance. ends with a payoff that is NOT parallel-structure.]
+[N] items below. each is ONE single-focus message: synth script (recordable) + variants.
+
+[2-3 casual sentences in sohail's voice on the shape of today's feed. no academic framing.]
 ```
 
-then if Bridge blurb exists, send as thread reply.
-then send the X-post draft as final thread reply.
+AFTER all per-item messages, send skip-list:
 
-if any send fails, log and continue with remaining items.
+```
+skipped this run (lower signal vs top [N]):
 
-# phase 5 — mark digest as written
+- [tweet_id]: [one-line reason]
+- ...
+```
 
-update the digest JSON's `stage2_completed_at` field to the current ISO timestamp. atomic write (.tmp + mv).
+# phase 8 — mark digest written
 
-# phase 6 — return summary
+update digest JSON's stage2_completed_at to current ISO timestamp. atomic write.
 
-return plain-text:
-(1) digest file processed
-(2) items processed
-(3) total blurbs generated (T1/T2/T3 counts + Bridge count)
-(4) verification calls made (tavily/webfetch/bird-search counts)
-(5) any errors
+# phase 9 — summary
 
-timeout budget: 7200s. take your time on voice — this is the whole point of the writer stage.
+(1) digest processed
+(2) primary items written up
+(3) items with cross-references / items single-source
+(4) items skipped
+(5) verification calls made
+(6) errors
+
+timeout: 7200s.
+
+# voice + slop reminder (guide.md):
+
+- lowercase "i"
+- no em-dashes
+- no punchline-parallel ("X isn't Y. Z is.")
+- no slop: delve, tapestry, navigate the landscape, in today's fast-paced world
+- casual conversational tone REQUIRED
+- one breath per sentence, no comma-lists of 3+
+- audio-first
+- only real sources, never invent

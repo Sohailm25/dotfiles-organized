@@ -1,136 +1,172 @@
-this is the X For You feed RESEARCH stage. runs 3x daily (8 AM / 12 PM / 6 PM CT). produces a structured JSON digest of every tweet with substance, with all research findings prefetched. the WRITER stage (separate cron job, claude opus) reads this file and writes the actual blurbs.
+this is the X feed RESEARCH stage. runs 3x daily (8 AM / 12 PM / 6 PM CT). produces a structured JSON digest of tweets with substance for sohail's AI/tech/career content.
 
 read these two files end to end before doing anything:
 - ~/clawd/contentforge/guide.md (filters, value bar, slop blacklist, POV anchors, pillars, tiers)
-- ~/clawd/contentforge/stories.md (sohail's war stories — used to identify anchor opportunities)
+- ~/clawd/contentforge/stories.md (sohail's war stories)
 
 # CRITICAL EXECUTION RULES
 
-1. bird-cli stderr warnings ("Failed to read Safari cookies", "No Twitter cookies found") are NOISE. Only check exit code (0 = success) and that stdout starts with `[` or `{`. ignore stderr completely.
-2. NEVER end the run without sending a status message to Slack channel:C0ACVEM27K8. If fetch fails entirely, send "stage 1 failed: [reason]" so sohail knows.
-3. If one tweet's research fails, skip THAT item's research and continue. Do NOT abandon the run.
-4. Process items in parallel batches where possible (background bash + wait).
+1. **USE `exec` TOOL ONLY for bird-cli calls. NOT `process`.** bird home/following/search/replies via exec + stdout redirect.
 
-# phase 1 — fetch timeline
+2. **bird-cli stderr warnings are NOISE.** "Failed to read Safari cookies" etc — discarded with `2>/dev/null`. Check exit code + stdout.
 
-run `bird home --json --count 100 > $TIMELINE_PATH` and save to:
-  ~/assistant/data/feed/raw/$(date +%Y-%m-%d-%H%M)/timeline.json
+3. **NEVER end the run without sending status to Slack channel:C0ACVEM27K8.**
 
-# phase 2 — triage (LOOSE — sohail is the judge)
+4. **THE PREVIOUS RUN FAILED CATASTROPHICALLY** — 15 cleared items were ALL shitposts/memes/gossip (Elon's travel, anime memes, ragebait commentary). The agent classified all of them as `pillar=Frame, pov_anchor=none` because it abused Frame as a catch-all. Do NOT repeat this.
 
-target 20-35 items cleared per 100. when in doubt, ship it.
+# phase 1 — base fetch (parallel, 250 each)
 
-auto-drop ONLY:
-- ads / promotional posts
+```
+TS=$(date +%Y-%m-%d-%H%M)
+BASE=~/assistant/data/feed/raw/$TS
+mkdir -p "$BASE/replies" "$BASE/research"
+
+bird home --json --count 250 > $BASE/home_algo.json 2>/dev/null &
+bird home --following --json --count 250 > $BASE/home_following.json 2>/dev/null &
+wait
+```
+
+verify both files > 5KB. dedup union by tweet_id (use the python script from prior versions).
+
+# phase 2 — relevance triage (LLM JUDGMENT, not keyword lists)
+
+**use your judgment as an editor.** for every tweet in the deduped union, ask yourself two questions:
+
+**Q1: would a thoughtful 2-7 YOE AI engineer scroll past this as noise, or stop and read?**
+- "scroll past as noise" → drop
+- "stop and read because there's a technical, industry, or career angle worth thinking about" → consider for triage
+
+**Q2: would Sohail's TikTok audience — engineers anxious about AI's impact on their career — want a 60-second take on this?**
+- if not → drop
+- if yes → consider for triage
+
+these are JUDGMENT calls, not keyword matches. trust your read.
+
+## audience reference
+
+Sohail's content is for: engineers (2-7 YOE) navigating AI's impact on work and career. They care about:
+- what the latest AI tools/models/papers actually mean for their job
+- inside-baseball on AI labs, releases, layoffs, hiring shifts
+- career navigation (when to leave, what to upskill, FDE vs IC, comp moves)
+- contrarian or non-obvious framings about AI work culture / model behavior / agency
+- specific production stories with real numbers
+- philosophical takes about work, obsession, identity, presence — IF tied to AI/tech work
+
+They do NOT care about: general culture memes, celebrity drama, sports, food posts, dating, TV/film/anime discussion, vulgar humor, motivational quotes detached from work, generic life observations.
+
+## calibration examples (the agent should match this taste)
+
+these PASS triage (clearly relevant to the ICP):
+- "I just shipped vLLM 0.5 in prod for our voice agents. KV cache fragmentation cost us 30% throughput after 12 hours." → technical, real numbers
+- "OpenAI just laid off the ML evals team. The signal is..." → industry signal, named org
+- "I left Meta for a Series A AI startup. Here's what I learned about deployment gaps." → career arc with frame
+- "Why most agent frameworks are wrappers around bash + asyncio" → contrarian technical frame
+- "@karpathy on why transformers won. Specifically about residual streams." → named practitioner technical opinion
+- "Cursor staff meeting with xAI as layoffs mount" → industry org dynamics
+- "Anthropic's new fine-tuning API has this gotcha most people miss" → technical with substance
+- "FDE postings up 800%. Here's why titles matter even when responsibilities overlap" → career signal
+
+these FAIL triage (the agent missed all of these last run):
+- "On my way to Beijing in Air Force One" → celebrity travel, no AI/tech/career angle
+- "I love how being annoying is just called ragebaiting now" → general culture observation, no work tie-in
+- "Imagine freeing one slave in your entire life and it's Hitler" → vulgar shitpost, no relevance
+- "The Boys ends next week after 7 years" → TV show discussion, no AI angle
+- "Picky eaters when they see chicken nuggets" → food meme
+- "How do you politely ask someone if they wanna fuck" → relationship shitpost
+- "Kai Cenat submitted a $2M bid for a 2026 World Cup ad" → celebrity / sports business
+- "Neyo spotted with three girlfriends in Paris" → celebrity gossip
+- non-english tweets (any language other than English)
+
+the difference: PASS items have a technical, industry, or career angle a thoughtful AI engineer would care about. FAIL items are general entertainment, culture commentary, celebrity drama, or generic life observations.
+
+## hard drops (these never clear regardless)
+
+- ads / promotional posts / "sign up for free trial" / coaching products
 - pure NFT / crypto token drama
 - political / culture-war
 - dunks / beefs / drama with no substance
-- "huge if true" with zero detail
+- "huge if true" / "wild" with zero detail
 - screenshots of LLM outputs with no commentary
 - posts about sohail himself
 - non-english tweets
+- ANY content that fails Q1 + Q2 above
 
-EVERYTHING ELSE clears if it has any substance.
+## per-item justification (NEW — mandatory)
 
-HARD FLOOR: if first pass clears fewer than 20 from 100, re-triage with only the drop list above.
+for EVERY item you clear, you MUST be able to complete this sentence:
+"This clears because [specific relevance signal: technical claim about ___ / named industry signal ___ / career frame about ___ / contrarian opinion on ___]."
 
-# phase 3 — per-item research (parallel where possible)
+if you can't write that sentence concretely, drop the item.
 
-for each cleared item:
+target: 10-12 items cleared. **HARD MAX: 12.**
 
-3a. fetch replies (parse stdout, ignore stderr):
-    bird replies <tweet-id> --json > ~/assistant/data/feed/raw/<ts>/replies/<tweet-id>.json
-    target 30-80 replies. exit code != 0 means skip this item's replies and continue.
+## Frame pillar guard (NEW — fix for v5 failure)
 
-3b. fetch related X content:
-    bird search "<keyword>" --json > ~/assistant/data/feed/raw/<ts>/research/<tweet-id>_bird.json
+Frame pillar items must specifically tie to AI work culture, model behavior, technical philosophy, agency/obsession in tech work, OR mirror sohail's essay topics (taste vs obsession, deployment gap, identity in tech work, presence in work).
 
-3c. Tavily web search (the openclaw web_search tool is BROKEN — use this instead):
-    curl -s -X POST https://api.tavily.com/search \
-      -H "Content-Type: application/json" \
-      -d '{"api_key":"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","query":"<topic>","max_results":5,"search_depth":"basic"}' \
-      > ~/assistant/data/feed/raw/<ts>/research/<tweet-id>_tavily.json
+a Frame pillar item must anchor to one of these POVs:
+- synthesis-not-creativity
+- obsession-is-the-moat
+- plans-fail-direction-survives
+- presence-is-a-choice
+- discernment-compounds-faster-than-skill
 
-3d. if the tweet links to an external URL, use WebFetch and save:
-    ~/assistant/data/feed/raw/<ts>/research/<tweet-id>_linked.md
+**if you classify an item as pillar=Frame with pov_anchor=none, that's a smell.** generic culture takes are NOT Frame — they fail triage above. re-check those items: they almost always belong dropped.
+
+# phase 3 — per-item dynamic enrichment
+
+for each cleared item (up to 12):
+
+3a. fetch replies (exec + redirect, ignore stderr):
+```
+bird replies <tweet-id> --json > $BASE/replies/<tweet-id>.json 2>/dev/null
+```
+
+3b. DYNAMIC bird searches for 1-3 specific entities/companies/products/people mentioned in the tweet:
+```
+bird search "<entity>" --json > $BASE/research/<tweet-id>_bird_<slug>.json 2>/dev/null
+```
+
+3c. DYNAMIC Tavily for central claim + key entities:
+```
+curl -s -X POST https://api.tavily.com/search \
+  -H "Content-Type: application/json" \
+  -d '{"api_key":"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","query":"<query>","max_results":5,"search_depth":"basic"}' \
+  > $BASE/research/<tweet-id>_tavily_<slug>.json
+```
+
+3d. WebFetch if linked URL: save to `$BASE/research/<tweet-id>_linked.md`
 
 # phase 4 — classify
 
-for each cleared item, classify:
-- pillar: Stack / Frame / Path
-- tiers_supported: any of T1 / T2 / T3
-- pov_anchor: name from guide.md POV anchors, or "no anchor"
-- bridge_audience: from guide.md Bridge audiences, or "no Bridge"
-- stories_anchor: slug from stories.md, or "none — observer mode"
+for each item: pillar, tiers_supported, pov_anchor, bridge_audience, stories_anchor, entities_searched.
 
-# phase 5 — produce structured digest JSON
+include `triage_reason` (the one-sentence justification from phase 2).
 
-write a SINGLE structured JSON file to:
-  ~/assistant/data/feed/digests-stage1/<ts>.json
+# phase 5 — write digest
 
-schema:
-{
-  "version": 1,
-  "run_id": "<ts>",
-  "stage1_completed_at": "<ISO timestamp>",
-  "tweets_fetched": <N>,
-  "items_cleared": <N>,
-  "items": [
-    {
-      "tweet_id": "...",
-      "source_url": "https://x.com/...",
-      "tweet_text": "<full text>",
-      "tweet_author_handle": "...",
-      "tweet_author_name": "...",
-      "tweet_metrics": { "likes": ..., "replies": ..., "retweets": ... },
-      "pillar": "Stack",
-      "tiers_supported": ["T2", "T3"],
-      "pov_anchor": "deployment-gap-is-the-business",
-      "bridge_audience": "product",
-      "stories_anchor": "vllm-qsr-throughput-cliffs",
-      "verbatim_quote": "<best quotable line from tweet, max 220 chars, or null>",
-      "replies_summary": "<one paragraph synthesizing the dominant reaction and key disagreements — uses verbatim quotes from replies file>",
-      "top_critical_reply": "<verbatim quote from the most-upvoted critical reply, with @author>",
-      "sentiment_delta": "<one paragraph on what the tweet claims vs what replies reveal — for steering writer's POV>",
-      "research_findings": {
-        "tavily_summary": "<2-4 sentences on what tavily surfaced: prior art, contradictions, related debates>",
-        "linked_url_summary": "<if a linked URL was fetched, 2-3 sentences on what it adds>",
-        "key_facts": ["specific verifiable fact 1", "fact 2", "..."]
-      },
-      "raw_files": {
-        "replies": "~/assistant/data/feed/raw/<ts>/replies/<id>.json",
-        "tavily": "~/assistant/data/feed/raw/<ts>/research/<id>_tavily.json",
-        "bird_search": "~/assistant/data/feed/raw/<ts>/research/<id>_bird.json",
-        "linked": "~/assistant/data/feed/raw/<ts>/research/<id>_linked.md (or null)"
-      }
-    },
-    ...
-  ],
-  "stage2_completed_at": null
-}
+write to `~/assistant/data/feed/digests-stage1/<TS>.json`. include in metadata:
+- `tweets_deduped`: union total
+- `triage_relevance_passed`: items that passed relevance triage (before HARD MAX cap)
+- `items_cleared`: final list (after cap)
 
-write the file ATOMICALLY: write to .tmp first, then mv to final path.
+per-item include `triage_reason` field.
 
-# phase 6 — brief slack status
-
-send ONE message via the message tool to channel:C0ACVEM27K8:
+# phase 6 — slack status
 
 ```
-stage 1 research complete -- [today's date], [HH:MM CT]
+stage 1 research complete — [date], [HH:MM CT]
 
-[N] tweets fetched.
-[N] items cleared.
-digest: ~/assistant/data/feed/digests-stage1/<ts>.json
+deduped union: [N] tweets
+relevance triage passed: [N]
+items cleared (after cap): [N] / 12
+enrichment queries: bird=[N] tavily=[N] webfetch=[N]
+digest: <path>
 writer fires in 5 min.
 ```
 
-# phase 7 — return summary
+# phase 7 — summary
 
-return plain-text:
-(1) tweets fetched
-(2) items cleared
-(3) tavily success rate
-(4) digest file path
-(5) any errors
+(1) per-source counts (2) deduped union (3) relevance triage passed (4) items cleared (5) enrichment query counts (6) errors
 
-timeout budget: 5400s.
+timeout: 5400s.
