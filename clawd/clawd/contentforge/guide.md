@@ -208,29 +208,52 @@ weight. no setup. no "today i want to talk about." no "hey guys."
 
 ---
 
-## the 6-beat structure
+## the script structure (revised — 3 required + 2 optional beats)
 
-every script follows this beat order. lost viewers stay because they get summary +
-primer up front. credibility hits in the middle. payoff lands at the end.
+scripts have **3 required beats** and **2 conditional beats**. forcing beats that
+don't belong produces "bantering for the sake of bantering" or "primer for things
+the audience already knows." both kill credibility.
+
+### required beats (every script)
 
 1. **hook** (5-8 words). claim, admission, or contrarian frame. lands by second 1.5.
-2. **tweet summary** ("here's what the tweet actually says"). one sentence. quote the
-   source enough that someone scrolling can follow without clicking through.
-3. **concept primer** ("for anyone lost, here's the thing..."). 1-3 sentences that
-   bring along viewers who don't already know the technical terrain. translate jargon
-   without dumbing it down — assume curiosity, not expertise.
-4. **personal stake** (lived moment from stories.md). real company, real time, real
-   numbers. anchored to one of the 16 stories. NEVER invented.
-5. **nuance / caveat / banter** ("here's where i'd push back" / "actually wait" /
-   "the messy part is..."). partial pushback, complication, admission of uncertainty.
-   THIS is what makes it feel like sohail talking, not an LLM.
-6. **payoff** (quotable frame, 1-2 sentences). aphoristic, takeable, screenshottable.
+
+2. **the substance** (2-4 sentences). NOT a paraphrase of the tweet. **the take.**
+   what's the cool / interesting / important angle that wouldn't be obvious from
+   skimming? why does this matter to a credible engineer? what's the non-obvious
+   read? quote the source verbatim when it's punchy. this is the heart of the
+   script — sohail rides on this. depth here >>> everything else.
+
+3. **payoff** (1-2 sentences). quotable frame. aphoristic. takeable. screenshottable.
    not advice. not "go do X." a frame the viewer carries.
 
-beats 2 and 3 are NEW (added after the first production run shipped scripts that were
-punchy but had no on-ramp for lost viewers and no summary of what was being reacted to).
-beat 5 is also NEW — without it, scripts read as LinkedIn essays. WITH it, they sound
-like a real person with real reactions.
+### conditional beats (include ONLY when justified)
+
+4. **concept primer** — include ONLY if a 2-7 YOE engineer would actually not know
+   the term. Skip if it's industry common knowledge (KV cache, prompt engineering,
+   RAG, MCP, agents, FDE, etc. are NOT mysteries to this audience). When in doubt,
+   skip. Sohail's audience hates being talked down to.
+
+5. **personal stake from stories.md** — include if there's a clean anchor in
+   `~/clawd/contentforge/stories.md`. When stories.md has a match, USE IT (real
+   numbers, real company). When it doesn't, skip. Observer framing in beat 2 covers
+   the credibility load fine — you don't need a stake every time.
+
+6. **nuance / caveat / pushback** — include ONLY if there's a genuine complication
+   or counter-take to surface. partial disagreement with the tweet. honest
+   uncertainty. a real "here's where i'd push back." NEVER for vibes. NEVER inserted
+   for the sake of "sounding human." if the take is clean, the take is clean — ship
+   without nuance. forced banter reads worse than no banter.
+
+### typical shapes by tier
+
+- **T1** (career/frame, 30-50s): hook + substance + payoff. occasionally + stake.
+  rarely + primer. nuance only when contrarian frame demands it.
+- **T2** (translated tech, 50-90s): hook + substance + payoff + usually stake.
+  primer only if the concept is genuinely obscure. nuance when the source got
+  something partially wrong.
+- **T3** (deep cred, 75-150s): hook + substance + stake (multiple numbers) +
+  nuance + payoff. primer almost never (this tier assumes technical fluency).
 
 ## pacing and script length (revised — longer for context + banter)
 
@@ -528,26 +551,31 @@ these rules override anything else in the guide. they were added after the first
 production run produced fabricated numbers, paraphrased sentiment deltas, essay-prose
 scripts, and 3-of-100 volume.
 
-### rule 1 — no fabricated specifics
+### rule 1 — no fabricated specifics (revised — observer mode is fine)
 
-every numeric claim ("60% reduction", "30% throughput drop", "2M docs") and every
-first-person moment ("we lost X", "i shipped Y", "i watched Z") MUST trace to:
+**FORBIDDEN: invented specific first-person claims.**
 
-  (a) a named story in `~/clawd/contentforge/stories.md`, OR
-  (b) a verbatim quote from the source tweet, OR
-  (c) a verbatim quote from a fetched reply
+These are bannable:
+- "we lost 30% throughput at company X"   (specific number + specific event + company)
+- "i shipped Y to Z customers and saw N% conversion"   (fabricated outcome)
+- "i ran vLLM at QSR for 2 years"   (fabricated tenure unless in stories.md)
 
-if no real anchor exists for a scripted moment, you have two options:
+**ALLOWED: observer framing, pattern language, generic experience.**
 
-  1. drop the moment and use a generalized framing — *"i've watched teams hit this
-     pattern"* — with NO first-person specific claim, NO invented number.
-  2. say so directly: *"i don't have a war story for this one. but the pattern is..."*
+These are fine:
+- "i've been seeing this pattern across teams"
+- "from what the replies are surfacing..."
+- "looking at this from the outside, the failure mode is..."
+- "from production reality, you know the moment this breaks"
+- "the move that usually works here is..."
 
-never invent. never paraphrase a real number as a different real-sounding number.
-never compose a composite story that didn't happen. composite stories destroy
-credibility on a single tiktok comment ("did you actually run vLLM at QSR? what
-company?"). the slop blacklist catches AI-generic phrasing. this rule catches
-AI-generic *facts*. the second is worse.
+The line: if the claim names a specific event, number, or company, it must trace to
+stories.md or a verbatim quote. If the claim is a pattern, frame, or general
+observation, it's fair game. The slop blacklist catches AI-generic phrasing. This
+rule catches AI-generic *fabricated specifics*. Don't conflate them.
+
+When stories.md has a relevant anchor, USE IT — that's the most credible move. When
+it doesn't, observer framing is the right move. Skipping the script entirely is NOT.
 
 ### rule 2 — sentiment delta must quote, not paraphrase
 
@@ -591,17 +619,25 @@ required:
 read each script in your head before submitting. if it reads like a linkedin
 post, it fails. if it reads like a voice memo, it ships.
 
-### rule 4 — value bar calibration (revised — broader)
+### rule 4 — value bar calibration (revised twice — hard floor + auto-loosen)
 
-at the time these rules were added, the agent was filtering 100 tweets → 3 items.
-that's too strict. **the bar is "is there ANY substance," not "would this blow the
-ICP's mind."**
+at one point the agent was filtering 100 tweets → 3 items. then 4. that's still
+broken. **the bar is "is there ANY substance," not "would this blow the ICP's mind."**
 
-target volume: **15-25 items per 100 tweets** clears, of which most support multiple
-tier scripts. if you're under 10, your bar is too high. if you're over 35, too low.
+target volume: **15-25 items per 100 tweets** clears.
 
-**when in doubt, ship it.** see the value bar section above. ambiguity from a credible
-practitioner is a ship signal.
+**HARD FLOOR — automatic re-triage:** if after first triage pass you have FEWER
+than 12 items cleared from 100, the bar was too high. STOP. re-triage the 100
+tweets with a deliberately loosened bar:
+
+  - drop the "would the network respect" filter
+  - keep only the drop list (drama, ads, politics, screenshots-of-LLMs)
+  - everything else that has any concrete claim or named opinion clears
+
+then proceed. it's better to ship 18 mixed-quality items than 4 "perfect" ones.
+sohail's job is to pick, the agent's job is to surface.
+
+**when in doubt, ship it.** ambiguity from a credible practitioner is a ship signal.
 
 what clears (examples — codify, don't restrict to these):
 - any model release with a concrete behavior change (not just announcement noise)
@@ -638,17 +674,28 @@ what drops:
 - pure NFT / crypto drama (token launches, rug pulls)
 - tweets that read like an ad even when not labeled as one
 
-### rule 5 — when in doubt, ship the item not-fully-scripted
+### rule 5 — every cleared item gets a script (REVISED — no more skipping)
 
-if an item clears the bar but you don't have enough context to write a *good* script,
-output the item with:
+**this rule replaces the previous rule 5 that allowed `(skipped — need anchor)`
+placeholders. that fallback was over-applied: round 4 produced 4 cleared items
+and 3 of them shipped as skipped placeholders. that's broken.**
 
-- the header (HOOK, tiers, Bridge, POV, sentiment delta, source) — fully populated
-- script slot per tier with the literal text: `(skipped — need a [stories.md anchor /
-  reply quote / external context] to write this without fabricating)`
+new rule: every cleared item gets AT LEAST one full script. observer framing is
+fine (see rule 1). stories.md anchor is a bonus, not a gate.
 
-a header without a script is more useful than a fabricated script. sohail can decide
-whether to script it manually or drop it.
+how to write without stories.md:
+- use observer / pattern framing: "from what i've been seeing", "the failure mode
+  most teams hit is", "the deployment reality is"
+- quote the source tweet verbatim in beat 2 instead of paraphrasing
+- quote the strongest reply verbatim in beat 5 as the nuance moment
+- if the source tweet has concrete numbers, quote them with attribution: "as
+  @author noted, 61% token cut — but the question is..."
+
+if the take genuinely isn't clear enough to write a 30-second script, the item
+didn't clear the bar. drop it before triage, not after.
+
+**you may NEVER ship an item with `(skipped...)` as a script. either write the
+script (with observer framing if needed) or drop the item entirely.**
 
 ---
 
